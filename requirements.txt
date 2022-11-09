@@ -1,0 +1,11 @@
+requests
+SQLAlchemy
+python-dotenv
+boto3
+snowflake-sqlalchemy
+Jinja2
+gensim
+seaborn
+folium
+pandas
+numpy
