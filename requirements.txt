@@ -1,11 +1,4 @@
-requests
-SQLAlchemy
-python-dotenv
-boto3
-snowflake-sqlalchemy
-Jinja2
-gensim
-seaborn
-folium
-pandas
-numpy
+pandas==1.5.1
+python-dotenv==0.21.0
+snowflake==0.0.3
+snowflake_sqlalchemy==1.2.3

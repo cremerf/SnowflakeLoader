@@ -1,8 +1,5 @@
 import snowflake.connector
-import snowflake.connector.pandas_tools
-import multiprocessing
 import pandas as pd
-from functools import partial
 from snowflake.connector.pandas_tools import write_pandas
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
@@ -37,6 +34,7 @@ def get_list_of_paths(csvs_file_path:str, ext:str) -> list:
     Returns:
         all_files: List of str (with paths to each file)
     """
+    # Grabs all the paths which belongs to csv files and store them in a list
     all_files = glob.glob(os.path.join(csvs_file_path, f"*.{ext}"))
 
     return all_files
@@ -51,6 +49,7 @@ def load_df_to_snowflake_tb(conn: snowflake.connector.connection.SnowflakeConnec
         df_chunk (pd.DataFrame): pd.DataFrame, batch of the file to be uploaded
     """
 
+    # Method to write a dataframe to a Snowflake EXISTING table
     write_pandas(
             conn= conn,
             df= df_chunk,
@@ -76,6 +75,7 @@ def load_csv_to_snowflake_table(conn: snowflake.connector.connection.SnowflakeCo
         csv_path (str): Path where persist the file
     """
 
+    # Loads the data from CSV in CHUNKS to avoid memory crash. We infer date time format to avoid missing/null values.
     df_iterator = pd.read_csv(
             filepath_or_buffer= csv_path, 
             engine='python', 
@@ -103,7 +103,7 @@ def load_csvs_to_snowflake_table(conn: snowflake.connector.connection.SnowflakeC
         fully_qualified_table_name (str): Name of the Snowflake table
         csv_file_paths (list[str]): Lists of paths where persist the files
     """
-
+    # If any file can't be loaded because it's corrupted, append it to this list
     unprocessed_files = []
     for csv_path in csv_file_paths:
         try:    
@@ -117,14 +117,6 @@ def load_csvs_to_snowflake_table(conn: snowflake.connector.connection.SnowflakeC
     else:
         print(f'{unprocessed_files}')
 
-
-    '''
-    pool = multiprocessing.Pool()
-    func = partial(write_pandas, conn, fully_qualified_table_name)
-    pool.map(func, csv_file_paths)
-    pool.close()
-    pool.join()
-    '''
 
 def run():
 

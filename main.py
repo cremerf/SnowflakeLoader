@@ -1,5 +1,3 @@
-import snowflake.connector
-import os
 from packages.connector import main_loader
 
 
