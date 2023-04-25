@@ -20,6 +20,9 @@ SCHEMA= os.getenv('SCHEMA')
 AUTHENTICATOR = os.getenv('AUTHENTICATOR')
 ROL= os.getenv('ROL')
 
+# Put the CSVs path
+csvs_file_path = ''
+
 AUTOCOMMIT = True
 
 def get_list_of_paths(csvs_file_path:str, ext:str) -> list:
@@ -134,7 +137,8 @@ def run():
 
     csv = 'csv'
 
-    csv_file_paths = get_list_of_paths(csvs_file_path="C:/Users/Fede/Desktop/FOCUS/Intellignos/AssistCard/ExtractedFromGA/H/2017", ext=csv)
+    # Go to the top of this script to define the csvs_file_path
+    csv_file_paths = get_list_of_paths(csvs_file_path= csvs_file_path, ext=csv)
 
     load_csvs_to_snowflake_table(conn= conn, fully_qualified_table_name= fully_qualified_table_name, csv_file_paths= csv_file_paths)
 
